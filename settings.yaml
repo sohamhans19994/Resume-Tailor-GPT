@@ -1,0 +1,9 @@
+# settings.yaml
+
+OPENAI_API_KEY: "YOUR_OPENAI_API_KEY"
+USE_LLAMA: false
+LLAMA_MODEL_PATH: "PATH_TO_LLAMA_MODEL" #only needed if use_llama is true
+RESUME_PROJECT_ID: "INSERT_YOUR_OVERLEAF_PROJECT_ID"
+DATA_FOLDER: "data"
+SELECTED_DATA_FOLDER: "selected_data"
+JOB_DESCRIPTION_FILE: "job_description.txt"

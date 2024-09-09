@@ -1,0 +1,15 @@
+[
+    {
+        "Company Name": "",
+        "Dates": "",
+        "Order" : 1,
+        "Role Title": "",
+        "Location": "",
+        "Points Range": [1,3],
+        "Experience Description":"Paragraph describing this experience. Include details so that they can be extracted by the llm.",
+        "Example Points":
+        [
+            "Points related to this experience in your current resume"
+        ] 
+    }
+]

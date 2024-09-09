@@ -5,7 +5,6 @@ import os
 import yaml
 
 if __name__ == "__main__":
-    show_cost = True
     api = pyoverleaf.Api()
     api.login_from_browser()
     format = 0
@@ -64,7 +63,7 @@ if __name__ == "__main__":
         f.write(skills_tex)
     
     print("Done! Open Overleaf in browser to view and download pdf.")
-    if show_cost:
+    if config['SHOW_API_COST']:
         print(f"Total cost for tailoring this resume in USD: ${llm_select.cost}")
 
 

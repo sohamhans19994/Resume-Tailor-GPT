@@ -1,0 +1,15 @@
+[
+    {
+        "Project Name": "",
+        "Dates": "", 
+        "Order" : 1,
+        "Points Range": [1,2],
+        "Tools List": 
+        [],
+        "Project Description": "Paragraph describing this project. Include details so that they can be extracted by the llm.",
+        "Example Points":
+        [
+            "Points related to this project in your current resume"
+        ]
+    }
+]

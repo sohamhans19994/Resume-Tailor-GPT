@@ -5,6 +5,7 @@ import os
 import yaml
 
 if __name__ == "__main__":
+    show_cost = True
     api = pyoverleaf.Api()
     api.login_from_browser()
     format = 0
@@ -13,7 +14,8 @@ if __name__ == "__main__":
         config = yaml.safe_load(file)
 
     # Delete all files in selected_data directory
-    directory_path = 'selected_data'
+    directory_path = config['SELECTED_DATA_FOLDER']
+    os.makedirs(directory_path, exist_ok=True)
     for filename in os.listdir(directory_path):
         file_path = os.path.join(directory_path, filename)
         # Check if it is a file and not a directory
@@ -29,7 +31,7 @@ if __name__ == "__main__":
 
     io = pyoverleaf.ProjectIO(api, config["RESUME_PROJECT_ID"])
 
-    education_tex = education_builder(os.path.join(config["DATA_FOLDER"],"education.json"))
+    education_tex = education_builder(os.path.join(config["DATA_FOLDER"],"education.json"),config['INCLUDE_RELEVANT_COURSEWORK'])
     with io.open("src/education.tex", "w+") as f:
         f.write(education_tex)
     
@@ -46,22 +48,25 @@ if __name__ == "__main__":
         with io.open("src/projects1.tex", "w") as f:
             pass
     
-    experience_tex = experience_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"experiences2.json"),"Supplemental Experience")
-    with io.open("src/experience2.tex", "w+") as f:
-        f.write(experience_tex)
+    experience_tex2 = experience_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"experiences2.json"),"Supplemental Experience")
+    with io.open("src/experience2.tex", "w") as f:
+        f.write(experience_tex2)
     
     project2_title = "Other Academic Projects"
     if format == 1:
         project2_title = "Academic Projects"
     project_tex = projects_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"projects2.json"),project2_title)
-    with io.open("src/projects2.tex", "w+") as f:
+    with io.open("src/projects2.tex", "w") as f:
             f.write(project_tex)
 
     skills_tex = skills_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"skills.json"))
-    with io.open("src/skills.tex", "w+") as f:
+    with io.open("src/skills.tex", "w") as f:
         f.write(skills_tex)
     
-    print("Done! Open Overleaf in browser to view and download pdf")
+    print("Done! Open Overleaf in browser to view and download pdf.")
+    if show_cost:
+        print(f"Total cost for tailoring this resume in USD: ${llm_select.cost}")
+
 
     
 

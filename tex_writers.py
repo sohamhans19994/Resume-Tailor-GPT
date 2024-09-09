@@ -5,7 +5,7 @@ def escape_latex(text):
     pattern = re.compile(r'([#$%^&_{|}~\\])')
     return pattern.sub(lambda m: '\\' + m.group(1), text)
 
-def education_builder(education_path):
+def education_builder(education_path, relevant_coursework = False):
     with open(education_path, 'r') as file:
         edu_data = json.load(file)
     edu_tex ="\section{Education}\n\\resumeSubHeadingListStart"
@@ -28,13 +28,14 @@ def education_builder(education_path):
 
         edu_tex += "\n"
 
-        # relevant_coursework = edu_item['Relevant Coursework']
-        # if len(relevant_coursework) > 0:
-        #     edu_tex += "\\resumeItemListStart\n"
-        #     edu_tex += "\\resumeItem{\\textbf{Relevant Coursework:}"
-        #     coursework = ", ".join(relevant_coursework)
-        #     edu_tex += f"{escape_latex(coursework)}"
-        #     edu_tex += "\n\\resumeItemListEnd"
+        if relevant_coursework:
+            relevant_coursework = edu_item['Relevant Coursework']
+            if len(relevant_coursework) > 0:
+                edu_tex += "\\resumeItemListStart\n"
+                edu_tex += "\\resumeItem{\\textbf{Relevant Coursework:}"
+                coursework = ", ".join(relevant_coursework)
+                edu_tex += f"{escape_latex(coursework)}"
+                edu_tex += "\n\\resumeItemListEnd"
         
     edu_tex += "\n\\resumeSubHeadingListEnd"
     return edu_tex

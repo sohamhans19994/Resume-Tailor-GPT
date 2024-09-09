@@ -76,7 +76,7 @@ class Selector:
             self.cost += cb.total_cost
         return out
 
-    def write_resume_points(self,jd_keywords_str, experience_description, example_resume_points, isProject = False, points_range = (1,3)):
+    def write_resume_points(self,jd_keywords_str, experience_description, example_resume_points, isProject = False, points_range = [1,3]):
         point_type = "experience"
         if isProject:
             point_type = "project"

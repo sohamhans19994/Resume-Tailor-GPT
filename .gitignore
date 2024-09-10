@@ -1,5 +1,5 @@
 .vscode/
-_pycache_/
+__pycache__/
 test.ipynb
 test2.ipynb
 selected_data/

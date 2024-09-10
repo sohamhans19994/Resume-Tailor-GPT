@@ -3,8 +3,24 @@ from selector import Selector
 import pyoverleaf
 import os
 import yaml
+import argparse
+
 
 if __name__ == "__main__":
+
+    parser = argparse.ArgumentParser(description='Process some arguments.')
+
+    # Add the "use_selected" argument as a flag
+    parser.add_argument(
+        '--use_selected',
+        action='store_true',
+        default=False,  # Default value is False
+        help='Use selected option'
+    )
+
+    # Parse the arguments
+    args = parser.parse_args()
+
     api = pyoverleaf.Api()
     api.login_from_browser()
     format = 0
@@ -13,21 +29,28 @@ if __name__ == "__main__":
         config = yaml.safe_load(file)
 
     # Delete all files in selected_data directory
-    directory_path = config['SELECTED_DATA_FOLDER']
-    os.makedirs(directory_path, exist_ok=True)
-    for filename in os.listdir(directory_path):
-        file_path = os.path.join(directory_path, filename)
-        # Check if it is a file and not a directory
-        if os.path.isfile(file_path):
-            os.remove(file_path)
-            print(f"Deleted file: {file_path}")
 
-    with open(config["JOB_DESCRIPTION_FILE"],"r") as f:
-        job_description = f.read()
+    if not args.use_selected:
+        directory_path = config['SELECTED_DATA_FOLDER']
+        os.makedirs(directory_path, exist_ok=True)
+        for filename in os.listdir(directory_path):
+            file_path = os.path.join(directory_path, filename)
+            # Check if it is a file and not a directory
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+                print(f"Deleted file: {file_path}")
 
-    llm_select = Selector(job_description)
-    format = llm_select.extract_data()
+        with open(config["JOB_DESCRIPTION_FILE"],"r") as f:
+            job_description = f.read()
 
+        llm_select = Selector(job_description)
+        format = llm_select.extract_data()
+    
+    else:
+        format = 0
+        if not os.path.isfile(os.path.join(config['SELECTED_DATA_FOLDER'],"projects1.json")):
+            format = 1
+    
     io = pyoverleaf.ProjectIO(api, config["RESUME_PROJECT_ID"])
 
     education_tex = education_builder(os.path.join(config["DATA_FOLDER"],"education.json"),config['INCLUDE_RELEVANT_COURSEWORK'])

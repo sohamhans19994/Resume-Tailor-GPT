@@ -145,13 +145,13 @@ class Selector:
 
 
     def extract_data(self):
-        with open('data/experiences.json') as f:
+        with open(os.path.join(config['DATA_FOLDER'],'experiences.json')) as f:
             experiences = json.load(f)
         
-        with open('data/projects.json') as f:
+        with open(os.path.join(config['DATA_FOLDER'],'projects.json')) as f:
             projects = json.load(f)
         
-        with open('data/skills.json') as f:
+        with open(os.path.join(config['DATA_FOLDER'],'skills.json')) as f:
             skills = json.load(f)
         
         keywords_output = self.extract_keywords()
@@ -189,7 +189,6 @@ class Selector:
         p2_exps = []
         p2_projs = []
         format = 0
-        
         for selection in selected_exps:
             if selection['type'] == 'Experience':
                 if len(p1_exps) < 3:
@@ -219,17 +218,17 @@ class Selector:
         if len(p1_projs) == 0:
             format = 1
         
-        with open('selected_data/experiences1.json', 'w') as f:
+        with open(os.path.join(config['SELECTED_DATA_FOLDER'],'experiences1.json'), 'w') as f:
             json.dump(sorted(p1_exps, key=lambda x: x["Order"], reverse=True),f,indent=4)
         
-        with open('selected_data/experiences2.json', 'w') as f:
+        with open(os.path.join(config['SELECTED_DATA_FOLDER'],'experiences2.json'), 'w') as f:
             json.dump(sorted(p2_exps, key=lambda x: x["Order"], reverse=True),f,indent=4)
         
         if format == 0:
-            with open('selected_data/projects1.json', 'w') as f:
+            with open(os.path.join(config['SELECTED_DATA_FOLDER'],'projects1.json'), 'w') as f:
                 json.dump(sorted(p1_projs, key=lambda x: x["Order"], reverse=True),f,indent=4)
             
-        with open('selected_data/projects2.json', 'w') as f:
+        with open(os.path.join(config['SELECTED_DATA_FOLDER'],'projects2.json'), 'w') as f:
             json.dump(sorted(p2_projs, key=lambda x: x["Order"], reverse=True),f,indent=4)
         
         skills_obj = self.extract_skills(skills_str,skills)
@@ -238,7 +237,7 @@ class Selector:
             "Technologies":skills_obj['technologies'],
             "Concepts":skills_obj['concepts']
         }
-        with open('selected_data/skills.json', 'w') as f:
+        with open(os.path.join(config['SELECTED_DATA_FOLDER'],'skills.json'), 'w') as f:
             json.dump(skills_dict,f,indent=4)
         
         return format        

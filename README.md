@@ -12,7 +12,9 @@ pip install -r requirements.txt
 
 ## Usage
 
-First populate the files within the `data/` folder with your information.
+Using the files within the `data/` folder as templates, create a separate directory, for e.g. `my_data/` and add the files `education.json`, `experiences.json`, `projects.json`, `skills.json` within it and populate it with the necessary information.
+
+Within the `settings.yaml` file, change the value of the `DATA_FOLDER` to the newly created directory (`my_data/` in the example above).
 
 Next, login to [Overleaf](https://www.overleaf.com/). Use the following [resume template](https://www.overleaf.com/latex/templates/swe-resume-template/bznbzdprjfyy) by Audric Serador and select the `Open as Template` button to create a project based on this template. Here, add details such as your name in `src/heading.tex`. Finally, go back to the [Overleaf Home](https://www.overleaf.com/project) to ensure the project is added.
 
@@ -32,7 +34,10 @@ print(projects[0].id)
 
 Populate the necessary elements in `settings.yaml`, including the retrieved project id from the previous step, as well as an `OPENAI_API_KEY`.
 
-To generate a tailored resume, paste the job description in the `job_description.txt` file. Then run
+To generate a tailored resume, paste the job description in the `job_description.txt` file. 
+Ensure that you have logged into overleaf from your browser.
+Then run
+
 ```bash
 python3 main.py
 ```

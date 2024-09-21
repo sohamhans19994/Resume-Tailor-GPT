@@ -9,7 +9,7 @@ import argparse
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description='Process some arguments.')
-
+    script_path = os.path.dirname(os.path.abspath(__file__))
     # Add the "use_selected" argument as a flag
     parser.add_argument(
         '--use_selected',
@@ -21,11 +21,10 @@ if __name__ == "__main__":
     # Parse the arguments
     args = parser.parse_args()
 
-    api = pyoverleaf.Api()
-    api.login_from_browser()
+    
     format = 0
 
-    with open('settings.yaml', 'r') as file:
+    with open(os.path.join(script_path,'settings.yaml'), 'r') as file:
         config = yaml.safe_load(file)
 
     # Delete all files in selected_data directory
@@ -40,7 +39,7 @@ if __name__ == "__main__":
                 os.remove(file_path)
                 print(f"Deleted file: {file_path}")
 
-        with open(config["JOB_DESCRIPTION_FILE"],"r") as f:
+        with open(os.path.join(script_path,"job_description.txt"),"r") as f:
             job_description = f.read()
 
         llm_select = Selector(job_description)
@@ -50,42 +49,40 @@ if __name__ == "__main__":
         format = 0
         if not os.path.isfile(os.path.join(config['SELECTED_DATA_FOLDER'],"projects1.json")):
             format = 1
-    
-    io = pyoverleaf.ProjectIO(api, config["RESUME_PROJECT_ID"])
 
     education_tex = education_builder(os.path.join(config["DATA_FOLDER"],"education.json"),config['INCLUDE_RELEVANT_COURSEWORK'])
-    with io.open("src/education.tex", "w+") as f:
+    with open(os.path.join(script_path,"tex_files/src/education.tex"),"w+") as f:
         f.write(education_tex)
-    
+
     
     experience_tex = experience_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"experiences1.json"),"Relevant Experience")
-    with io.open("src/experience1.tex", "w+") as f:
+    with open(os.path.join(script_path,"tex_files/src/experience1.tex"),"w+") as f:
         f.write(experience_tex)
-    
+
     if format == 0:
         project_tex = projects_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"projects1.json"),"Key Projects")
-        with io.open("src/projects1.tex", "w+") as f:
+        with open(os.path.join(script_path,"tex_files/src/projects1.tex"),"w+") as f:
             f.write(project_tex)
     else:
-        with io.open("src/projects1.tex", "w") as f:
+        with open(os.path.join(script_path,"tex_files/src/projects1.tex"),"w") as f:
             pass
     
     experience_tex2 = experience_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"experiences2.json"),"Supplemental Experience")
-    with io.open("src/experience2.tex", "w") as f:
+    with open(os.path.join(script_path,"tex_files/src/experience2.tex"),"w+") as f:
         f.write(experience_tex2)
     
     project2_title = "Other Academic Projects"
     if format == 1:
         project2_title = "Academic Projects"
-    project_tex = projects_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"projects2.json"),project2_title)
-    with io.open("src/projects2.tex", "w") as f:
-            f.write(project_tex)
+    project_tex2 = projects_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"projects2.json"),project2_title)
+    with open(os.path.join(script_path,"tex_files/src/projects2.tex"),"w+") as f:
+        f.write(project_tex2)
 
     skills_tex = skills_builder(os.path.join(config["SELECTED_DATA_FOLDER"],"skills.json"))
-    with io.open("src/skills.tex", "w") as f:
+    with open(os.path.join(script_path,"tex_files/src/skills.tex"),"w+") as f:
         f.write(skills_tex)
     
-    print("Done! Open Overleaf in browser to view and download pdf.")
+    print("Done! Convert tex_files to PDF to view")
     if config['SHOW_API_COST']:
         print(f"Total cost for tailoring this resume in USD: ${llm_select.cost}")
 
